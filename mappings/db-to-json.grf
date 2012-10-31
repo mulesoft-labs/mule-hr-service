@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graph author="Dan" created="Mon Oct 15 16:06:57 PDT 2012" guiVersion="3.3.0.M2" id="1350406238505" licenseCode="Unlicensed" licenseType="Unknown" modified="Mon Oct 15 16:06:57 PDT 2012" modifiedBy="Dan" name="db-to-json" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __sourcePath="{}/employee" _dataStructure="OBJECT" _id="__id" _type="Input" id="4588e25f-9df9-49d4-96ec-9e389d790100">
+<Record fieldDelimiter="|" label="employee" name="employee" recordDelimiter="&#10;" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/employee/ID" label="ID" name="ID" type="integer"/>
+<Field __sourcePath="{}/employee/EMAIL" label="EMAIL" name="EMAIL" type="string"/>
+<Field __sourcePath="{}/employee/GITHUB_ID" label="GITHUB_ID" name="GITHUB_ID" type="string"/>
+<Field __sourcePath="{=}/employee/FIRST_NAME" label="FIRST_NAME" name="FIRST_NAME" type="string"/>
+<Field __sourcePath="{=}/employee/LAST_NAME" label="LAST_NAME" name="LAST_NAME" type="string"/>
+</Record>
+</Metadata>
+<Metadata __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Output" id="Metadata0">
+<Record fieldDelimiter="|" name="object" recordDelimiter="&#10;" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" label="__id" name="__id" type="string"/>
+<Field __sourcePath="{}/object/id" label="id" name="id" type="number"/>
+<Field __sourcePath="{}/object/gitId" label="gitId" name="gitId" type="string"/>
+<Field __sourcePath="{}/object/email" label="email" name="email" type="string"/>
+<Field __sourcePath="{=}/object/firstName" label="firstName" name="firstName" type="string"/>
+<Field __sourcePath="{=}/object/lastName" label="lastName" name="lastName" type="string"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" fileURL="dict:inputPayload" guiHeight="0" guiName="Maps / List of Maps  READER" guiWidth="0" guiX="20" guiY="20" id="BEAN_READER0" type="BEAN_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context outPort="0" sequenceField="__id" xpath=".">
+  <Mapping cloverField="ID" trim="true" xpath="ID"/>
+  <Mapping cloverField="EMAIL" trim="true" xpath="EMAIL"/>
+  <Mapping cloverField="GITHUB_ID" trim="true" xpath="GITHUB_ID"/>
+  <Mapping cloverField="FIRST_NAME" trim="true" xpath="FIRST_NAME"/>
+  <Mapping cloverField="LAST_NAME" trim="true" xpath="LAST_NAME"/>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[MAP]]></attr>
+</Node>
+<Node charset="UTF-8" enabled="enabled" fileURL="dict:outputPayload" guiHeight="0" guiName="JSON WRITER" guiWidth="0" guiX="680" guiY="20" id="JSON_WRITER0" type="JSON_WRITER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<object xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
+  <id>$0.id</id>
+  <gitId>$0.gitId</gitId>
+  <email>$0.email</email>
+  <firstName>$0.firstName</firstName>
+  <lastName>$0.lastName</lastName>
+</object>]]></attr>
+<attr name="_data_format"><![CDATA[JSON]]></attr>
+<attr name="jsonSchemaURL"><![CDATA[.\get.json]]></attr>
+</Node>
+<Node enabled="enabled" guiHeight="0" guiName="employee_to_object" guiWidth="0" guiX="240" guiY="20" id="REFORMAT0" type="REFORMAT">
+<attr name="transform"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.0.lastName = $in.0.LAST_NAME;
+	$out.0.firstName = $in.0.FIRST_NAME;
+	$out.0.gitId = $in.0.GITHUB_ID;
+	$out.0.email = $in.0.EMAIL;
+	
+	$out.0.id = $in.0.ID;
+$out.0.__id=$in.0.__id;
+		return ALL;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="4588e25f-9df9-49d4-96ec-9e389d790100" outPort="Port 0 (out)" toNode="REFORMAT0:0"/>
+<Edge debugMode="true" fromNode="REFORMAT0:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="Metadata0" outPort="Port 0 (out)" toNode="JSON_WRITER0:0"/>
+</Phase>
+</Graph>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:cloudhub="http://www.mulesoft.org/schema/mule/cloudhub" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:jira="http://www.mulesoft.org/schema/mule/jira" 
+xmlns:github="http://www.mulesoft.org/schema/mule/github" 
+xmlns="http://www.mulesoft.org/schema/mule/core" 
+xmlns:json="http://www.mulesoft.org/schema/mule/json" 
+xmlns:http="http://www.mulesoft.org/schema/mule/http" 
+xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" 
+xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
+xmlns:spring="http://www.springframework.org/schema/beans" 
+xmlns:core="http://www.mulesoft.org/schema/mule/core" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+version="EE-3.3.1" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/github http://www.mulesoft.org/schema/mule/github/1.0/mule-github.xsd 
+http://www.mulesoft.org/schema/mule/ee/jdbc http://www.mulesoft.org/schema/mule/ee/jdbc/current/mule-jdbc-ee.xsd 
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd 
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd 
+http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd 
+http://www.mulesoft.org/schema/mule/cloudhub http://www.mulesoft.org/schema/mule/cloudhub/1.0/mule-cloudhub.xsd 
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd 
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd 
+http://www.mulesoft.org/schema/mule/jira http://www.mulesoft.org/schema/mule/jira/2.0/mule-jira.xsd ">
+    <sfdc:config name="Salesforce" doc:name="Salesforce" username="dan.diephouse@66demo.com" password="Cloudhub1" securityToken="I12IcfHhFJn6Mf1Zx1Nh3C8F"/>
+    
+    <github:config name="GitHub" user="cloudhubdemoadmin" password="Cloudhub1" doc:name="GitHub"/>
+    
+    <jdbc-ee:mysql-data-source name="MySQL_Data_Source" user="cloudhubdemo" password="Cloudhub!" url="jdbc:mysql://cloudhubdemo.c4agc9xd61eo.us-east-1.rds.amazonaws.com:3306/hrservice" transactionIsolation="UNSPECIFIED" doc:name="MySQL Data Source"/>
+    
+    <jdbc-ee:connector name="Database" dataSource-ref="MySQL_Data_Source" validateConnections="true" queryTimeout="-1" pollingFrequency="0" doc:name="Database"/>
+    
+    <cloudhub:config name="Cloudhub" doc:name="Cloudhub"/>
+    <data-mapper:config name="db-to-json" transformationGraphPath="db-to-json.grf" doc:name="DataMapper"/>
+    
+    <flow name="API" doc:name="API">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="employees" tracking:enable-default-events="true" doc:name="HTTP"/>
+        <choice doc:name="Choice">
+            <when expression="#[message.inboundProperties['http.method'] == 'GET']">
+                <processor-chain>
+                    <flow-ref name="GetEmployee" doc:name="Get Employee"/>
+                </processor-chain>
+            </when>
+            <when expression="#[message.inboundProperties['http.method'] == 'POST']">
+                <processor-chain>
+                    <flow-ref name="CreateEmployee" doc:name="Create Employee"/>
+                </processor-chain>
+            </when>
+        </choice>
+    </flow>
+    <flow name="AddMemberToGithub" doc:name="AddMemberToGithub" >
+        <github:add-team-member config-ref="GitHub" id="265887" user="#[payload.gitId]" doc:name="GitHub" />
+        <tracking:custom-event event-name="Added Engineer to Team" doc:name="Added Engineer to Team">
+        	<tracking:meta-data key="Github ID" value="#[payload['gitId']]"  />
+        </tracking:custom-event>
+        <logger message="Added Github User #[payload]" level="ERROR" doc:name="Logger"/>
+        <catch-exception-strategy doc:name="Catch Exception Strategy" >
+            <cloudhub:create-notification-from-flow config-ref="Cloudhub" message="Could not add user #[payload.firstName + ' ' + payload.lastName] to team in Github." priority="ERROR" doc:name="Cloudhub">
+                <cloudhub:custom-properties ref="#[payload]"/>
+            </cloudhub:create-notification-from-flow>
+        </catch-exception-strategy>
+    </flow>
+    <flow name="AddUserToSalesforce" doc:name="AddUserToSalesforce" >
+    	<set-variable variableName="salesforceUsername" 
+    		   value="#[payload.firstName.toLowerCase() + '.' + payload.lastName.toLowerCase() + '.test@66demo.com']" doc:name="Variable"/>
+        <sfdc:create config-ref="Salesforce" type="User" doc:name="Salesforce" >
+            <sfdc:objects >
+                <sfdc:object>
+                    <sfdc:inner-object key="FirstName">#[payload.firstName]</sfdc:inner-object>
+                    <sfdc:inner-object key="LastName">#[payload.lastName]</sfdc:inner-object>
+                    <sfdc:inner-object key="Username">#[flowVars['salesforceUsername']]</sfdc:inner-object>
+                    <sfdc:inner-object key="Email">#[payload.email]</sfdc:inner-object>
+                    <sfdc:inner-object key="Alias">#[payload.firstName]</sfdc:inner-object>
+                    <sfdc:inner-object key="TimeZoneSidKey">America/Los_Angeles</sfdc:inner-object>
+                    <sfdc:inner-object key="LocaleSidKey">en_US</sfdc:inner-object>
+                    <sfdc:inner-object key="EmailEncodingKey">ISO-8859-1</sfdc:inner-object>
+                    <sfdc:inner-object key="ProfileId">00eG000000148RU</sfdc:inner-object>
+                    <sfdc:inner-object key="LanguageLocaleKey">en_US</sfdc:inner-object>
+                </sfdc:object>
+            </sfdc:objects>
+        </sfdc:create>
+        <tracking:custom-event event-name="Added User to Salesforce" doc:name="Added User to Salesforce">
+        	<tracking:meta-data key="Salesforce Username" value="#[flowVars['salesforceUsername']]"  />
+        </tracking:custom-event>
+        <logger message="Added Salesforce User #[payload]" level="ERROR" doc:name="Logger"/>
+    </flow>
+    
+    <sub-flow name="CreateEmployee" doc:name="CreateEmployee">
+        <json:json-to-object-transformer doc:name="JSON to Object" returnClass="java.util.Map"/>
+        <logger message="Creating Employee... #[payload]" level="ERROR" doc:name="Logger"/>
+        <expression-component doc:name="Set Email">payload['email'] = payload['firstName'].toLowerCase() + "." + payload['lastName'].toLowerCase() + "@mulesoft.com"; return payload</expression-component>
+        
+        <flow-ref name="SaveToDB" doc:name="Flow Reference"/>
+
+        <tracking:transaction id="#[payload['id']]"/>
+        <tracking:custom-event event-name="Created Employee" doc:name="Created Employee">
+            <tracking:meta-data key="Employee Id" value="#[payload['id']]"/>
+            <tracking:meta-data key="Employee First Name" value="#[payload['firstName']]"/>
+            <tracking:meta-data key="Employee Last Name" value="#[payload['lastName']]"/>
+            <tracking:meta-data key="Employee Email" value="#[payload['email']]"/>
+        </tracking:custom-event>
+        
+        <choice doc:name="Choice">
+        	<when expression="#[payload['gitId']]">
+        		<flow-ref name="AddMemberToGithub" doc:name="Add to Git"/>
+        	</when>
+        </choice>
+        
+        <enricher target="salesforceResult" doc:name="Message Enricher">
+        	<flow-ref name="AddUserToSalesforce" doc:name="Create Salesforce User"/>
+        </enricher>
+        
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+        
+    </sub-flow>
+    
+    <sub-flow name="GetEmployee" doc:name="GetEmployee">
+        <jdbc-ee:outbound-endpoint exchange-pattern="request-response" queryKey="retrieve employee" queryTimeout="-1" connector-ref="Database" doc:name="Database">
+            <jdbc-ee:query key="retrieve employee" value="SELECT ID, FIRST_NAME, LAST_NAME, GITHUB_ID, SALESFORCE_USERNAME, EMAIL from employee where ID = #[message.inboundProperties['id']]"/>
+        </jdbc-ee:outbound-endpoint>
+        <tracking:custom-event event-name="Retrieved Employee" doc:name="Retrieved Employee">
+            <tracking:meta-data key="Employee Id" value="#[payload['ID']]"/>
+            <tracking:meta-data key="Employee First Name" value="#[payload['FIRST_NAME']]"/>
+            <tracking:meta-data key="Employee Last Name" value="#[payload['LAST_NAME']]"/>
+            <tracking:meta-data key="Employee Email" value="#[payload['EMAIL']]"/>
+            <tracking:meta-data key="Employee Git ID" value="#[payload['GITHUB_ID']]"/>
+        </tracking:custom-event>
+        <data-mapper:transform config-ref="db-to-json" doc:name="DataMapper"/>
+    </sub-flow>
+    <sub-flow name="SaveToDB" doc:name="SaveToDB">
+        <enricher target="payload['id']" doc:name="Message Enricher">
+            <processor-chain doc:name="Processor Chain">
+                <jdbc-ee:outbound-endpoint exchange-pattern="request-response" queryKey="increment ID" queryTimeout="10" connector-ref="Database" doc:name="Database">
+                    <jdbc-ee:query key="increment ID" value="SELECT Auto_Increment next_val FROM INFORMATION_SCHEMA.TABLES WHERE table_schema=DATABASE() AND Table_name ='employee'"/>
+                </jdbc-ee:outbound-endpoint>
+                <set-payload value="#[payload[0]['next_val']]" doc:name="Set Payload"/>
+            </processor-chain>
+        </enricher>
+        <logger message="Employee ID #[payload['id']]" level="ERROR" doc:name="Logger"/>
+        <jdbc-ee:outbound-endpoint exchange-pattern="one-way" queryKey="create employee" queryTimeout="10" connector-ref="Database" doc:name="Database">
+            <jdbc-ee:query key="create employee" value="INSERT INTO employee (ID, FIRST_NAME, LAST_NAME, EMAIL, GITHUB_ID) VALUES (#[payload['id']], #[payload['firstName']], #[payload['lastName']], #[payload['email']], #[payload['gitId']])"/>
+        </jdbc-ee:outbound-endpoint>
+        <logger message="Saved Employee in DB #[payload]" level="ERROR" doc:name="Logger"/>
+    </sub-flow>
+</mule>
