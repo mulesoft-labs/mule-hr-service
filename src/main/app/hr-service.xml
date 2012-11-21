@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:cloudhub="http://www.mulesoft.org/schema/mule/cloudhub" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:jira="http://www.mulesoft.org/schema/mule/jira" 
+<mule xmlns:ftp="http://www.mulesoft.org/schema/mule/ee/ftp" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:cloudhub="http://www.mulesoft.org/schema/mule/cloudhub" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:jira="http://www.mulesoft.org/schema/mule/jira" 
 xmlns:github="http://www.mulesoft.org/schema/mule/github" 
 xmlns="http://www.mulesoft.org/schema/mule/core" 
 xmlns:json="http://www.mulesoft.org/schema/mule/json" 
@@ -17,10 +17,11 @@ http://www.mulesoft.org/schema/mule/github http://www.mulesoft.org/schema/mule/g
 http://www.mulesoft.org/schema/mule/ee/jdbc http://www.mulesoft.org/schema/mule/ee/jdbc/current/mule-jdbc-ee.xsd 
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd 
 http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd 
-http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd 
+http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/5.0/mule-sfdc.xsd 
 http://www.mulesoft.org/schema/mule/cloudhub http://www.mulesoft.org/schema/mule/cloudhub/1.0/mule-cloudhub.xsd 
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd 
+http://www.mulesoft.org/schema/mule/ee/ftp http://www.mulesoft.org/schema/mule/ee/ftp/current/mule-ftp-ee.xsd 
 http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd 
 http://www.mulesoft.org/schema/mule/jira http://www.mulesoft.org/schema/mule/jira/2.0/mule-jira.xsd ">
     <sfdc:config name="Salesforce" doc:name="Salesforce" username="dan.diephouse@66demo.com" password="Cloudhub1" securityToken="I12IcfHhFJn6Mf1Zx1Nh3C8F"/>
@@ -31,7 +32,7 @@ http://www.mulesoft.org/schema/mule/jira http://www.mulesoft.org/schema/mule/jir
     
     <jdbc-ee:connector name="Database" dataSource-ref="MySQL_Data_Source" validateConnections="true" queryTimeout="-1" pollingFrequency="0" doc:name="Database"/>
     
-    <cloudhub:config name="Cloudhub" doc:name="Cloudhub"/>
+    <cloudhub:config name="Cloudhub" doc:name="Cloudhub" url="https://qa.cloudhub.io"/>
     <data-mapper:config name="db-to-json" transformationGraphPath="db-to-json.grf" doc:name="DataMapper"/>
     
     <flow name="API" doc:name="API">
@@ -50,20 +51,25 @@ http://www.mulesoft.org/schema/mule/jira http://www.mulesoft.org/schema/mule/jir
         </choice>
     </flow>
     <flow name="AddMemberToGithub" doc:name="AddMemberToGithub" >
-        <github:add-team-member config-ref="GitHub" id="265887" user="#[payload.gitId]" doc:name="GitHub" />
-        <tracking:custom-event event-name="Added Engineer to Team" doc:name="Added Engineer to Team">
-        	<tracking:meta-data key="Github ID" value="#[payload['gitId']]"  />
+        <tracking:custom-event event-name="Adding Engineer to Team" doc:name="Adding Engineer to Team">
+            <tracking:meta-data key="Github ID" value="#[payload.gitId]"/>
         </tracking:custom-event>
+        <github:add-team-member config-ref="GitHub" id="265887" user="#[payload.gitId]" doc:name="GitHub" />
         <logger message="Added Github User #[payload]" level="ERROR" doc:name="Logger"/>
         <catch-exception-strategy doc:name="Catch Exception Strategy" >
-            <cloudhub:create-notification-from-flow config-ref="Cloudhub" message="Could not add user #[payload.firstName + ' ' + payload.lastName] to team in Github." priority="ERROR" doc:name="Cloudhub">
-                <cloudhub:custom-properties ref="#[payload]"/>
+            <cloudhub:create-notification-from-flow config-ref="Cloudhub" message="Could not add user #[payload.firstName + ' ' + payload.lastName] to team in Github." priority="ERROR" doc:name="Cloudhub"  >
+                <cloudhub:custom-properties>
+                	<cloudhub:custom-property key="gitId" value-ref="#[payload['gitId']]"/>
+                </cloudhub:custom-properties>
             </cloudhub:create-notification-from-flow>
         </catch-exception-strategy>
     </flow>
     <flow name="AddUserToSalesforce" doc:name="AddUserToSalesforce" >
     	<set-variable variableName="salesforceUsername" 
     		   value="#[payload.firstName.toLowerCase() + '.' + payload.lastName.toLowerCase() + '.test@66demo.com']" doc:name="Variable"/>
+        <tracking:custom-event event-name="Adding User to Salesforce" doc:name="Adding User to Salesforce">
+            <tracking:meta-data key="Salesforce Username" value="#[flowVars[&amp;apos;salesforceUsername&amp;apos;]]"/>
+        </tracking:custom-event>
         <sfdc:create config-ref="Salesforce" type="User" doc:name="Salesforce" >
             <sfdc:objects >
                 <sfdc:object>
@@ -80,9 +86,6 @@ http://www.mulesoft.org/schema/mule/jira http://www.mulesoft.org/schema/mule/jir
                 </sfdc:object>
             </sfdc:objects>
         </sfdc:create>
-        <tracking:custom-event event-name="Added User to Salesforce" doc:name="Added User to Salesforce">
-        	<tracking:meta-data key="Salesforce Username" value="#[flowVars['salesforceUsername']]"  />
-        </tracking:custom-event>
         <logger message="Added Salesforce User #[payload]" level="ERROR" doc:name="Logger"/>
     </flow>
     

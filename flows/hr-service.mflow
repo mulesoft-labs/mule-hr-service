@@ -14,7 +14,10 @@
             <property name="proxyPassword"/>
             <property value="1" name="auxiliary;index"/>
             <property name="timeObjectStore-ref"/>
+            <property name="assignmentRuleId"/>
             <property name="clientId"/>
+            <property name="allowFieldTruncationSupport"/>
+            <property name="useDefaultRule"/>
             <property value="1" name="auxiliary;index"/>
             <property value="1" name="auxiliary;index"/>
             <property value="1" name="auxiliary;index"/>
@@ -86,7 +89,7 @@
         <properties>
             <property value="Cloudhub" name="name"/>
             <property value="5" name="auxiliary;index"/>
-            <property name="url"/>
+            <property value="https://qa.cloudhub.io" name="url"/>
             <property name="maxWaitTime"/>
             <property value="5" name="auxiliary;index"/>
             <property name="username"/>
@@ -105,7 +108,7 @@
             <property value="6" name="auxiliary;index"/>
         </properties>
     </global-element>
-    <flow SubFlow="false" name="API" entity-id="fd25cc88-6a29-4203-a56a-5c56623872b1">
+    <flow SubFlow="false" name="API" entity-id="b7f9a6df-12d7-4556-b78e-382b6fe4e080">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
@@ -161,22 +164,43 @@
             </endpoint>
             <splitter index="9" type="org.mule.tooling.ui.modules.core.pattern.cbr" name="Choice" entity-id="Choice#1">
                 <properties>
-                    <property-collection name="22ec0918-8e01-4bd1-90ab-28c41df46b74">
-                        <property value="#[message.inboundProperties['http.method'] == 'POST']" name="choice.expression"/>
-                        <property-collection name="choice.attributes">
-                            <property value="#[message.inboundProperties['http.method'] == 'POST']" name="expression"/>
-                        </property-collection>
-                    </property-collection>
-                    <property-collection name="19112166-cc78-48b8-b3a4-a34ed6444d47">
+                    <property value="9" name=";INDEX"/>
+                    <property value="9" name=";INDEX"/>
+                    <property value="9" name=";INDEX"/>
+                    <property-collection name="0945457d-a815-4a4b-9ebe-6278bdebb640">
                         <property value="#[message.inboundProperties['http.method'] == 'GET']" name="choice.expression"/>
                         <property-collection name="choice.attributes">
                             <property value="#[message.inboundProperties['http.method'] == 'GET']" name="expression"/>
                         </property-collection>
                     </property-collection>
+                    <property-collection name="7f637935-8f94-44ca-bb2e-bd1eb3a354e3">
+                        <property value="#[message.inboundProperties['http.method'] == 'POST']" name="choice.expression"/>
+                        <property-collection name="choice.attributes">
+                            <property value="#[message.inboundProperties['http.method'] == 'POST']" name="expression"/>
+                        </property-collection>
+                    </property-collection>
                 </properties>
-                <pattern type="org.mule.tooling.ui.modules.core.pattern.cbr" name="Choice" entity-id="Choice#2"/>
+                <pattern type="org.mule.tooling.ui.modules.core.pattern.cbr" name="Choice" entity-id="Choice#2">
+                    <properties>
+                        <property value="9" name=";INDEX"/>
+                        <property value="9" name=";INDEX"/>
+                        <property value="9" name=";INDEX"/>
+                        <property-collection name="0945457d-a815-4a4b-9ebe-6278bdebb640">
+                            <property value="#[message.inboundProperties['http.method'] == 'GET']" name="choice.expression"/>
+                            <property-collection name="choice.attributes">
+<property value="#[message.inboundProperties['http.method'] == 'GET']" name="expression"/>
+                            </property-collection>
+                        </property-collection>
+                        <property-collection name="7f637935-8f94-44ca-bb2e-bd1eb3a354e3">
+                            <property value="#[message.inboundProperties['http.method'] == 'POST']" name="choice.expression"/>
+                            <property-collection name="choice.attributes">
+<property value="#[message.inboundProperties['http.method'] == 'POST']" name="expression"/>
+                            </property-collection>
+                        </property-collection>
+                    </properties>
+                </pattern>
                 <compartment entity-id="compartment#1">
-                    <lane isChoiceOtherwiseLane="false" index="11" hadOnlyOneElement="false" entity-id="19112166-cc78-48b8-b3a4-a34ed6444d47">
+                    <lane isChoiceOtherwiseLane="false" index="11" hadOnlyOneElement="false" entity-id="0945457d-a815-4a4b-9ebe-6278bdebb640">
                         <pattern type="http://www.mulesoft.org/schema/mule/core/flow-ref" name="Get Employee" entity-id="Flow Reference#1">
                             <properties>
 <property value="GetEmployee" name="name"/>
@@ -186,7 +210,7 @@
                             </properties>
                         </pattern>
                     </lane>
-                    <lane isChoiceOtherwiseLane="false" index="14" hadOnlyOneElement="false" entity-id="22ec0918-8e01-4bd1-90ab-28c41df46b74">
+                    <lane isChoiceOtherwiseLane="false" index="14" hadOnlyOneElement="false" entity-id="7f637935-8f94-44ca-bb2e-bd1eb3a354e3">
                         <pattern type="http://www.mulesoft.org/schema/mule/core/flow-ref" name="Create Employee" entity-id="Flow Reference#2">
                             <properties>
 <property value="CreateEmployee" name="name"/>
@@ -196,12 +220,12 @@
                             </properties>
                         </pattern>
                     </lane>
-                    <lane isChoiceOtherwiseLane="true" index="0" hadOnlyOneElement="false" entity-id="1fe97362-a216-4089-ab6c-9a7444c409df"/>
+                    <lane isChoiceOtherwiseLane="true" index="0" hadOnlyOneElement="false" entity-id="a7019d8f-b8ce-4b81-8919-45506a507dbd"/>
                 </compartment>
             </splitter>
         </lane>
     </flow>
-    <flow SubFlow="false" name="AddMemberToGithub" entity-id="db3e4b25-d4a2-428d-8006-681453c11057">
+    <flow SubFlow="false" name="AddMemberToGithub" entity-id="3b0dfb99-5a04-418b-b8a7-160452af183f">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
@@ -213,35 +237,35 @@
             <property value="16" name="auxiliary;index"/>
         </properties>
         <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="compartment-lane#2">
+            <pattern type="http://www.mulesoft.org/schema/mule/ee/tracking/custom-event" name="Adding Engineer to Team" entity-id="Custom business event#1">
+                <properties>
+                    <property value="Adding Engineer to Team" name="event-name"/>
+                    <property value="17" name="auxiliary;index"/>
+                    <property name="updated"/>
+                    <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;0">
+                        <property value="#[payload.gitId]" name="value"/>
+                        <property value="18" name="auxiliary;wrapIn"/>
+                        <property value="18" name="auxiliary;index"/>
+                        <property value="Github ID" name="key"/>
+                    </property-collection>
+                </properties>
+                <description></description>
+            </pattern>
             <pattern type="http://www.mulesoft.org/schema/mule/github/github-connector" name="GitHub" entity-id="GitHub#2">
                 <properties>
                     <property value="GitHub" name="config-ref"/>
                     <property value="http://www.mulesoft.org/schema/mule/github/add-team-member" name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute"/>
                     <property value="GitHub" name="config-ref"/>
-                    <property value="17" name="auxiliary;index"/>
+                    <property value="19" name="auxiliary;index"/>
                     <property value="265887" name="id"/>
                     <property value="#[payload.gitId]" name="user"/>
-                    <property value="17" name="auxiliary;index"/>
-                    <property value="17" name="auxiliary;index"/>
-                    <property value="17" name="auxiliary;index"/>
-                    <property value="17" name="auxiliary;index"/>
-                    <property value="17" name="auxiliary;index"/>
-                    <property value="17" name="auxiliary;index"/>
-                    <property value="17" name="auxiliary;index"/>
-                </properties>
-            </pattern>
-            <pattern type="http://www.mulesoft.org/schema/mule/ee/tracking/custom-event" name="Added Engineer to Team" entity-id="Custom business event#1">
-                <properties>
-                    <property value="Added Engineer to Team" name="event-name"/>
-                    <property value="18" name="auxiliary;index"/>
-                    <property value="18" name="auxiliary;index"/>
-                    <property value="18" name="auxiliary;index"/>
-                    <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;0">
-                        <property value="#[payload['gitId']]" name="value"/>
-                        <property value="19" name="auxiliary;wrapIn"/>
-                        <property value="19" name="auxiliary;index"/>
-                        <property value="Github ID" name="key"/>
-                    </property-collection>
+                    <property value="19" name="auxiliary;index"/>
+                    <property value="19" name="auxiliary;index"/>
+                    <property value="19" name="auxiliary;index"/>
+                    <property value="19" name="auxiliary;index"/>
+                    <property value="19" name="auxiliary;index"/>
+                    <property value="19" name="auxiliary;index"/>
+                    <property value="19" name="auxiliary;index"/>
                 </properties>
             </pattern>
             <pattern type="http://www.mulesoft.org/schema/mule/core/logger" name="Logger" entity-id="Logger#1">
@@ -256,7 +280,7 @@
             </pattern>
             <scope type="http://www.mulesoft.org/schema/mule/core/catch-exception-strategy" name="Catch Exception Strategy" entity-id="Catch Exception Strategy#1">
                 <properties>
-                    <property name=""/>
+                    <property name="labelConfigureConditionalExecutionUsingExpression"/>
                     <property name="when"/>
                     <property name="enableNotifications"/>
                     <property value="21" name="auxiliary;index"/>
@@ -283,9 +307,17 @@
 <property value="22" name="auxiliary;index"/>
 <property value="22" name="auxiliary;index"/>
 <property-collection name="@http://www.mulesoft.org/schema/mule/cloudhub/create-notification-from-flow-custom-propertiess;0">
-    <property value="#[payload]" name="ref"/>
     <property value="23" name="auxiliary;wrapIn"/>
     <property value="23" name="auxiliary;index"/>
+    <property value="true" name="isProcessed$$$$"/>
+    <property-collection name="@http://www.mulesoft.org/schema/mule/cloudhub/create-notification-from-flow-custom-properties;1">
+        <property value="" name="value"/>
+        <property value="24" name="auxiliary;wrapIn"/>
+        <property value="24" name="auxiliary;index"/>
+        <property value="#[payload['gitId']]" name="value-ref"/>
+        <property value="gitId" name="key"/>
+        <property value="true" name="isProcessed$$$$"/>
+    </property-collection>
 </property-collection>
                             </properties>
                         </pattern>
@@ -294,16 +326,16 @@
             </scope>
         </lane>
     </flow>
-    <flow SubFlow="false" name="AddUserToSalesforce" entity-id="8eadccac-f2ed-4751-89ad-2a14039ea464">
+    <flow SubFlow="false" name="AddUserToSalesforce" entity-id="b04a249a-7e46-4240-8223-f042be3f9334">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
-            <property value="24" name="auxiliary;index"/>
+            <property value="25" name="auxiliary;index"/>
             <property name="bussinessEventsLabel"/>
             <property name="tracking:enable-default-events"/>
-            <property value="24" name="auxiliary;index"/>
-            <property value="24" name="auxiliary;index"/>
-            <property value="24" name="auxiliary;index"/>
+            <property value="25" name="auxiliary;index"/>
+            <property value="25" name="auxiliary;index"/>
+            <property value="25" name="auxiliary;index"/>
         </properties>
         <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="compartment-lane#4">
             <pattern type="http://www.mulesoft.org/schema/mule/core/variable-transformer" name="Variable" entity-id="Variable#1">
@@ -311,13 +343,27 @@
                     <property value="http://www.mulesoft.org/schema/mule/core/set-variable" name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute"/>
                     <property value="salesforceUsername" name="variableName"/>
                     <property value="#[payload.firstName.toLowerCase() + '.' + payload.lastName.toLowerCase() + '.test@66demo.com']" name="value"/>
-                    <property value="25" name="auxiliary;index"/>
-                    <property value="25" name="auxiliary;index"/>
-                    <property value="25" name="auxiliary;index"/>
-                    <property value="25" name="auxiliary;index"/>
-                    <property value="25" name="auxiliary;index"/>
-                    <property value="25" name="auxiliary;index"/>
-                    <property value="25" name="auxiliary;index"/>
+                    <property value="26" name="auxiliary;index"/>
+                    <property value="26" name="auxiliary;index"/>
+                    <property value="26" name="auxiliary;index"/>
+                    <property value="26" name="auxiliary;index"/>
+                    <property value="26" name="auxiliary;index"/>
+                    <property value="26" name="auxiliary;index"/>
+                    <property value="26" name="auxiliary;index"/>
+                </properties>
+            </pattern>
+            <pattern type="http://www.mulesoft.org/schema/mule/ee/tracking/custom-event" name="Adding User to Salesforce" entity-id="Custom business event#2">
+                <properties>
+                    <property value="Adding User to Salesforce" name="event-name"/>
+                    <property value="27" name="auxiliary;index"/>
+                    <property value="27" name="auxiliary;index"/>
+                    <property value="27" name="auxiliary;index"/>
+                    <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;0">
+                        <property value="#[flowVars['salesforceUsername']]" name="value"/>
+                        <property value="28" name="auxiliary;wrapIn"/>
+                        <property value="28" name="auxiliary;index"/>
+                        <property value="Salesforce Username" name="key"/>
+                    </property-collection>
                 </properties>
             </pattern>
             <pattern type="http://www.mulesoft.org/schema/mule/sfdc/sfdc-connector" name="Salesforce" entity-id="Salesforce#2">
@@ -325,11 +371,11 @@
                     <property value="Salesforce" name="config-ref"/>
                     <property value="http://www.mulesoft.org/schema/mule/sfdc/create" name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute"/>
                     <property value="Salesforce" name="config-ref"/>
-                    <property value="26" name="auxiliary;index"/>
+                    <property value="29" name="auxiliary;index"/>
                     <property value="User" name="type"/>
-                    <property value="26" name="auxiliary;index"/>
-                    <property value="26" name="auxiliary;index"/>
-                    <property value="26" name="auxiliary;index"/>
+                    <property value="29" name="auxiliary;index"/>
+                    <property value="29" name="auxiliary;index"/>
+                    <property value="29" name="auxiliary;index"/>
                     <property name=""/>
                     <property name="username"/>
                     <property name="password"/>
@@ -339,94 +385,80 @@
                     <property name="proxyPort"/>
                     <property name="proxyUsername"/>
                     <property name="proxyPassword"/>
-                    <property value="26" name="auxiliary;index"/>
-                    <property value="26" name="auxiliary;index"/>
-                    <property value="26" name="auxiliary;index"/>
-                    <property value="26" name="auxiliary;index"/>
-                    <property value="26" name="auxiliary;index"/>
-                    <property value="26" name="auxiliary;index"/>
-                    <property value="26" name="auxiliary;index"/>
+                    <property value="29" name="auxiliary;index"/>
+                    <property value="29" name="auxiliary;index"/>
+                    <property value="29" name="auxiliary;index"/>
+                    <property value="29" name="auxiliary;index"/>
+                    <property value="29" name="auxiliary;index"/>
+                    <property value="29" name="auxiliary;index"/>
+                    <property value="29" name="auxiliary;index"/>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/create-objectss;0">
-                        <property value="27" name="auxiliary;wrapIn"/>
-                        <property value="27" name="auxiliary;index"/>
+                        <property value="30" name="auxiliary;wrapIn"/>
+                        <property value="30" name="auxiliary;index"/>
                         <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/create-objects;1">
-                            <property value="28" name="auxiliary;wrapIn"/>
-                            <property value="28" name="auxiliary;index"/>
-                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;10">
-<property value="en_US" name="value"/>
-<property value="38" name="auxiliary;wrapIn"/>
-<property value="38" name="auxiliary;index"/>
-<property value="LanguageLocaleKey" name="key"/>
-                            </property-collection>
-                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;6">
-<property value="America/Los_Angeles" name="value"/>
-<property value="34" name="auxiliary;wrapIn"/>
-<property value="34" name="auxiliary;index"/>
-<property value="TimeZoneSidKey" name="key"/>
-                            </property-collection>
-                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;5">
+                            <property value="31" name="auxiliary;wrapIn"/>
+                            <property value="31" name="auxiliary;index"/>
+                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;1">
 <property value="#[payload.firstName]" name="value"/>
-<property value="33" name="auxiliary;wrapIn"/>
-<property value="33" name="auxiliary;index"/>
-<property value="Alias" name="key"/>
-                            </property-collection>
-                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;8">
-<property value="ISO-8859-1" name="value"/>
-<property value="36" name="auxiliary;wrapIn"/>
-<property value="36" name="auxiliary;index"/>
-<property value="EmailEncodingKey" name="key"/>
-                            </property-collection>
-                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;7">
-<property value="en_US" name="value"/>
-<property value="35" name="auxiliary;wrapIn"/>
-<property value="35" name="auxiliary;index"/>
-<property value="LocaleSidKey" name="key"/>
+<property value="32" name="auxiliary;wrapIn"/>
+<property value="32" name="auxiliary;index"/>
+<property value="FirstName" name="key"/>
                             </property-collection>
                             <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;2">
 <property value="#[payload.lastName]" name="value"/>
-<property value="30" name="auxiliary;wrapIn"/>
-<property value="30" name="auxiliary;index"/>
+<property value="33" name="auxiliary;wrapIn"/>
+<property value="33" name="auxiliary;index"/>
 <property value="LastName" name="key"/>
-                            </property-collection>
-                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;1">
-<property value="#[payload.firstName]" name="value"/>
-<property value="29" name="auxiliary;wrapIn"/>
-<property value="29" name="auxiliary;index"/>
-<property value="FirstName" name="key"/>
-                            </property-collection>
-                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;4">
-<property value="#[payload.email]" name="value"/>
-<property value="32" name="auxiliary;wrapIn"/>
-<property value="32" name="auxiliary;index"/>
-<property value="Email" name="key"/>
                             </property-collection>
                             <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;3">
 <property value="#[flowVars['salesforceUsername']]" name="value"/>
-<property value="31" name="auxiliary;wrapIn"/>
-<property value="31" name="auxiliary;index"/>
+<property value="34" name="auxiliary;wrapIn"/>
+<property value="34" name="auxiliary;index"/>
 <property value="Username" name="key"/>
+                            </property-collection>
+                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;4">
+<property value="#[payload.email]" name="value"/>
+<property value="35" name="auxiliary;wrapIn"/>
+<property value="35" name="auxiliary;index"/>
+<property value="Email" name="key"/>
+                            </property-collection>
+                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;5">
+<property value="#[payload.firstName]" name="value"/>
+<property value="36" name="auxiliary;wrapIn"/>
+<property value="36" name="auxiliary;index"/>
+<property value="Alias" name="key"/>
+                            </property-collection>
+                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;6">
+<property value="America/Los_Angeles" name="value"/>
+<property value="37" name="auxiliary;wrapIn"/>
+<property value="37" name="auxiliary;index"/>
+<property value="TimeZoneSidKey" name="key"/>
+                            </property-collection>
+                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;7">
+<property value="en_US" name="value"/>
+<property value="38" name="auxiliary;wrapIn"/>
+<property value="38" name="auxiliary;index"/>
+<property value="LocaleSidKey" name="key"/>
+                            </property-collection>
+                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;8">
+<property value="ISO-8859-1" name="value"/>
+<property value="39" name="auxiliary;wrapIn"/>
+<property value="39" name="auxiliary;index"/>
+<property value="EmailEncodingKey" name="key"/>
                             </property-collection>
                             <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;9">
 <property value="00eG000000148RU" name="value"/>
-<property value="37" name="auxiliary;wrapIn"/>
-<property value="37" name="auxiliary;index"/>
+<property value="40" name="auxiliary;wrapIn"/>
+<property value="40" name="auxiliary;index"/>
 <property value="ProfileId" name="key"/>
                             </property-collection>
+                            <property-collection name="@http://www.mulesoft.org/schema/mule/sfdc/inner-create-objects;10">
+<property value="en_US" name="value"/>
+<property value="41" name="auxiliary;wrapIn"/>
+<property value="41" name="auxiliary;index"/>
+<property value="LanguageLocaleKey" name="key"/>
+                            </property-collection>
                         </property-collection>
-                    </property-collection>
-                </properties>
-            </pattern>
-            <pattern type="http://www.mulesoft.org/schema/mule/ee/tracking/custom-event" name="Added User to Salesforce" entity-id="Custom business event#2">
-                <properties>
-                    <property value="Added User to Salesforce" name="event-name"/>
-                    <property value="39" name="auxiliary;index"/>
-                    <property value="39" name="auxiliary;index"/>
-                    <property value="39" name="auxiliary;index"/>
-                    <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;0">
-                        <property value="#[flowVars['salesforceUsername']]" name="value"/>
-                        <property value="40" name="auxiliary;wrapIn"/>
-                        <property value="40" name="auxiliary;index"/>
-                        <property value="Salesforce Username" name="key"/>
                     </property-collection>
                 </properties>
             </pattern>
@@ -435,27 +467,27 @@
                     <property value="Added Salesforce User #[payload]" name="message"/>
                     <property value="ERROR" name="level"/>
                     <property name="category"/>
-                    <property value="41" name="auxiliary;index"/>
-                    <property value="41" name="auxiliary;index"/>
-                    <property value="41" name="auxiliary;index"/>
+                    <property value="42" name="auxiliary;index"/>
+                    <property value="42" name="auxiliary;index"/>
+                    <property value="42" name="auxiliary;index"/>
                 </properties>
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="CreateEmployee" entity-id="f9f95ec2-e335-4927-a958-ab505fc0170f">
+    <flow SubFlow="true" name="CreateEmployee" entity-id="952bdf34-6168-472a-ac19-2c90f6dd5bdc">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
-            <property value="42" name="auxiliary;index"/>
+            <property value="43" name="auxiliary;index"/>
             <property name="bussinessEventsLabel"/>
             <property name="tracking:enable-default-events"/>
-            <property value="42" name="auxiliary;index"/>
-            <property value="42" name="auxiliary;index"/>
-            <property value="42" name="auxiliary;index"/>
+            <property value="43" name="auxiliary;index"/>
+            <property value="43" name="auxiliary;index"/>
+            <property value="43" name="auxiliary;index"/>
             <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/transaction;0">
                 <property value="#[payload['id']]" name="id"/>
-                <property value="47" name="auxiliary;wrapIn"/>
-                <property value="47" name="auxiliary;index"/>
+                <property value="48" name="auxiliary;wrapIn"/>
+                <property value="48" name="auxiliary;index"/>
             </property-collection>
         </properties>
         <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="compartment-lane#5">
@@ -464,14 +496,14 @@
                     <property value="java.util.Map" name="returnClass"/>
                     <property name="ignoreBadInput"/>
                     <property name="encoding"/>
-                    <property value="43" name="auxiliary;index"/>
+                    <property value="44" name="auxiliary;index"/>
                     <property name="mimeType"/>
-                    <property value="43" name="auxiliary;index"/>
-                    <property value="43" name="auxiliary;index"/>
+                    <property value="44" name="auxiliary;index"/>
+                    <property value="44" name="auxiliary;index"/>
                     <property name="mapper-ref"/>
-                    <property value="43" name="auxiliary;index"/>
-                    <property value="43" name="auxiliary;index"/>
-                    <property value="43" name="auxiliary;index"/>
+                    <property value="44" name="auxiliary;index"/>
+                    <property value="44" name="auxiliary;index"/>
+                    <property value="44" name="auxiliary;index"/>
                 </properties>
             </pattern>
             <pattern type="http://www.mulesoft.org/schema/mule/core/logger" name="Logger" entity-id="Logger#3">
@@ -479,9 +511,9 @@
                     <property value="Creating Employee... #[payload]" name="message"/>
                     <property value="ERROR" name="level"/>
                     <property name="category"/>
-                    <property value="44" name="auxiliary;index"/>
-                    <property value="44" name="auxiliary;index"/>
-                    <property value="44" name="auxiliary;index"/>
+                    <property value="45" name="auxiliary;index"/>
+                    <property value="45" name="auxiliary;index"/>
+                    <property value="45" name="auxiliary;index"/>
                 </properties>
             </pattern>
             <pattern type="http://www.mulesoft.org/schema/mule/core/expression-component" name="Set Email" entity-id="Expression#1">
@@ -489,91 +521,106 @@
                     <property name="evaluator"/>
                     <property value="payload['email'] = payload['firstName'].toLowerCase() + &quot;.&quot; + payload['lastName'].toLowerCase() + &quot;@mulesoft.com&quot;; return payload" name="expression"/>
                     <property name="file"/>
-                    <property value="45" name="auxiliary;index"/>
-                    <property value="45" name="auxiliary;index"/>
-                    <property value="45" name="auxiliary;index"/>
+                    <property value="46" name="auxiliary;index"/>
+                    <property value="46" name="auxiliary;index"/>
+                    <property value="46" name="auxiliary;index"/>
                 </properties>
             </pattern>
             <pattern type="http://www.mulesoft.org/schema/mule/core/flow-ref" name="Flow Reference" entity-id="Flow Reference#3">
                 <properties>
                     <property value="SaveToDB" name="name"/>
-                    <property value="46" name="auxiliary;index"/>
-                    <property value="46" name="auxiliary;index"/>
-                    <property value="46" name="auxiliary;index"/>
+                    <property value="47" name="auxiliary;index"/>
+                    <property value="47" name="auxiliary;index"/>
+                    <property value="47" name="auxiliary;index"/>
                 </properties>
             </pattern>
             <pattern type="http://www.mulesoft.org/schema/mule/ee/tracking/custom-event" name="Created Employee" entity-id="Custom business event#3">
                 <properties>
                     <property value="Created Employee" name="event-name"/>
-                    <property value="48" name="auxiliary;index"/>
-                    <property value="48" name="auxiliary;index"/>
-                    <property value="48" name="auxiliary;index"/>
+                    <property value="49" name="auxiliary;index"/>
+                    <property value="49" name="auxiliary;index"/>
+                    <property value="49" name="auxiliary;index"/>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;0">
                         <property value="#[payload['id']]" name="value"/>
-                        <property value="49" name="auxiliary;wrapIn"/>
-                        <property value="49" name="auxiliary;index"/>
+                        <property value="50" name="auxiliary;wrapIn"/>
+                        <property value="50" name="auxiliary;index"/>
                         <property value="Employee Id" name="key"/>
                     </property-collection>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;1">
                         <property value="#[payload['firstName']]" name="value"/>
-                        <property value="50" name="auxiliary;wrapIn"/>
-                        <property value="50" name="auxiliary;index"/>
+                        <property value="51" name="auxiliary;wrapIn"/>
+                        <property value="51" name="auxiliary;index"/>
                         <property value="Employee First Name" name="key"/>
                     </property-collection>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;2">
                         <property value="#[payload['lastName']]" name="value"/>
-                        <property value="51" name="auxiliary;wrapIn"/>
-                        <property value="51" name="auxiliary;index"/>
+                        <property value="52" name="auxiliary;wrapIn"/>
+                        <property value="52" name="auxiliary;index"/>
                         <property value="Employee Last Name" name="key"/>
                     </property-collection>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;3">
                         <property value="#[payload['email']]" name="value"/>
-                        <property value="52" name="auxiliary;wrapIn"/>
-                        <property value="52" name="auxiliary;index"/>
+                        <property value="53" name="auxiliary;wrapIn"/>
+                        <property value="53" name="auxiliary;index"/>
                         <property value="Employee Email" name="key"/>
                     </property-collection>
                 </properties>
             </pattern>
-            <splitter index="53" type="org.mule.tooling.ui.modules.core.pattern.cbr" name="Choice" entity-id="Choice#3">
+            <splitter index="54" type="org.mule.tooling.ui.modules.core.pattern.cbr" name="Choice" entity-id="Choice#3">
                 <properties>
-                    <property-collection name="19f2c6f8-6502-446c-a4e3-114a57683966">
+                    <property value="54" name=";INDEX"/>
+                    <property value="54" name=";INDEX"/>
+                    <property value="54" name=";INDEX"/>
+                    <property-collection name="092fa338-1cfb-4dab-8cd8-6ca60df681e4">
                         <property value="#[payload['gitId']]" name="choice.expression"/>
                         <property-collection name="choice.attributes">
                             <property value="#[payload['gitId']]" name="expression"/>
                         </property-collection>
                     </property-collection>
                 </properties>
-                <pattern type="org.mule.tooling.ui.modules.core.pattern.cbr" name="Choice" entity-id="Choice#4"/>
+                <pattern type="org.mule.tooling.ui.modules.core.pattern.cbr" name="Choice" entity-id="Choice#4">
+                    <properties>
+                        <property value="54" name=";INDEX"/>
+                        <property value="54" name=";INDEX"/>
+                        <property value="54" name=";INDEX"/>
+                        <property-collection name="092fa338-1cfb-4dab-8cd8-6ca60df681e4">
+                            <property value="#[payload['gitId']]" name="choice.expression"/>
+                            <property-collection name="choice.attributes">
+<property value="#[payload['gitId']]" name="expression"/>
+                            </property-collection>
+                        </property-collection>
+                    </properties>
+                </pattern>
                 <compartment entity-id="compartment#3">
-                    <lane isChoiceOtherwiseLane="false" index="55" hadOnlyOneElement="true" entity-id="19f2c6f8-6502-446c-a4e3-114a57683966">
+                    <lane isChoiceOtherwiseLane="false" index="56" hadOnlyOneElement="true" entity-id="092fa338-1cfb-4dab-8cd8-6ca60df681e4">
                         <pattern type="http://www.mulesoft.org/schema/mule/core/flow-ref" name="Add to Git" entity-id="Flow Reference#4">
                             <properties>
 <property value="AddMemberToGithub" name="name"/>
-<property value="55" name="auxiliary;index"/>
-<property value="55" name="auxiliary;index"/>
-<property value="55" name="auxiliary;index"/>
+<property value="56" name="auxiliary;index"/>
+<property value="56" name="auxiliary;index"/>
+<property value="56" name="auxiliary;index"/>
                             </properties>
                         </pattern>
                     </lane>
-                    <lane isChoiceOtherwiseLane="true" index="0" hadOnlyOneElement="false" entity-id="82f4583b-a196-47d5-a5b1-791448fd06b9"/>
+                    <lane isChoiceOtherwiseLane="true" index="0" hadOnlyOneElement="false" entity-id="d2cbedd9-6fe1-40c8-bc11-bb6bf4dc0f80"/>
                 </compartment>
             </splitter>
             <scope type="org.mule.tooling.ui.modules.core.scope.enricher" name="Message Enricher" entity-id="Message Enricher#1">
                 <properties>
                     <property name="source"/>
                     <property value="salesforceResult" name="target"/>
-                    <property value="56" name="auxiliary;index"/>
-                    <property value="56" name="auxiliary;index"/>
-                    <property value="56" name="auxiliary;index"/>
+                    <property value="57" name="auxiliary;index"/>
+                    <property value="57" name="auxiliary;index"/>
+                    <property value="57" name="auxiliary;index"/>
                 </properties>
                 <compartment entity-id="compartment#4">
                     <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="compartment-lane#6">
                         <pattern type="http://www.mulesoft.org/schema/mule/core/flow-ref" name="Create Salesforce User" entity-id="Flow Reference#5">
                             <properties>
 <property value="AddUserToSalesforce" name="name"/>
-<property value="57" name="auxiliary;index"/>
-<property value="57" name="auxiliary;index"/>
-<property value="57" name="auxiliary;index"/>
+<property value="58" name="auxiliary;index"/>
+<property value="58" name="auxiliary;index"/>
+<property value="58" name="auxiliary;index"/>
                             </properties>
                         </pattern>
                     </lane>
@@ -584,68 +631,68 @@
                     <property name="returnClass"/>
                     <property name="ignoreBadInput"/>
                     <property name="encoding"/>
-                    <property value="58" name="auxiliary;index"/>
+                    <property value="59" name="auxiliary;index"/>
                     <property name="mimeType"/>
-                    <property value="58" name="auxiliary;index"/>
-                    <property value="58" name="auxiliary;index"/>
+                    <property value="59" name="auxiliary;index"/>
+                    <property value="59" name="auxiliary;index"/>
                     <property name="mapper-ref"/>
                     <property name="sourceClass"/>
-                    <property value="58" name="auxiliary;index"/>
-                    <property value="58" name="auxiliary;index"/>
-                    <property value="58" name="auxiliary;index"/>
+                    <property value="59" name="auxiliary;index"/>
+                    <property value="59" name="auxiliary;index"/>
+                    <property value="59" name="auxiliary;index"/>
                 </properties>
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="GetEmployee" entity-id="118b5306-93c1-4c28-aef4-87523db214e1">
+    <flow SubFlow="true" name="GetEmployee" entity-id="ec64350a-c2ac-4eaf-a183-5c2a6ebd4339">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
-            <property value="59" name="auxiliary;index"/>
+            <property value="60" name="auxiliary;index"/>
             <property name="bussinessEventsLabel"/>
             <property name="tracking:enable-default-events"/>
-            <property value="59" name="auxiliary;index"/>
-            <property value="59" name="auxiliary;index"/>
-            <property value="59" name="auxiliary;index"/>
+            <property value="60" name="auxiliary;index"/>
+            <property value="60" name="auxiliary;index"/>
+            <property value="60" name="auxiliary;index"/>
         </properties>
         <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="compartment-lane#7">
             <endpoint message-exchange-pattern="OneWay" direction="Outbound" type="http://www.mulesoft.org/schema/mule/ee/jdbc/endpoint" name="Database" entity-id="Database#2">
                 <properties>
                     <property value="one-way" name="exchange-pattern"/>
                     <property value="request-response" name="exchange-pattern"/>
-                    <property value="60" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
                     <property name=""/>
                     <property value="retrieve employee" name="queryKey"/>
-                    <property value="60" name="auxiliary;index"/>
-                    <property value="60" name="auxiliary;index"/>
-                    <property value="60" name="auxiliary;index"/>
-                    <property value="60" name="auxiliary;index"/>
-                    <property value="60" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
                     <property name="businessEventsLabel"/>
                     <property name="tracking:enable-default-events"/>
-                    <property value="60" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
                     <property name="address"/>
                     <property name="responseTimeout"/>
                     <property name="encoding"/>
                     <property name="disableTransportTransformer"/>
                     <property name="mimeType"/>
-                    <property value="60" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
                     <property value="-1" name="queryTimeout"/>
                     <property name="pollingFrequency"/>
-                    <property value="60" name="auxiliary;index"/>
-                    <property value="60" name="auxiliary;index"/>
-                    <property value="60" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
                     <property value="Database" name="connector-ref"/>
                     <property name="ref"/>
                     <property name="transformer-refs"/>
                     <property name="responseTransformer-refs"/>
-                    <property value="60" name="auxiliary;index"/>
-                    <property value="60" name="auxiliary;index"/>
-                    <property value="60" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
+                    <property value="61" name="auxiliary;index"/>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/ee/jdbc/query;0">
                         <property value="SELECT ID, FIRST_NAME, LAST_NAME, GITHUB_ID, SALESFORCE_USERNAME, EMAIL from employee where ID = #[message.inboundProperties['id']]" name="value"/>
-                        <property value="61" name="auxiliary;wrapIn"/>
-                        <property value="61" name="auxiliary;index"/>
+                        <property value="62" name="auxiliary;wrapIn"/>
+                        <property value="62" name="auxiliary;index"/>
                         <property value="retrieve employee" name="key"/>
                     </property-collection>
                 </properties>
@@ -653,37 +700,37 @@
             <pattern type="http://www.mulesoft.org/schema/mule/ee/tracking/custom-event" name="Retrieved Employee" entity-id="Custom business event#4">
                 <properties>
                     <property value="Retrieved Employee" name="event-name"/>
-                    <property value="62" name="auxiliary;index"/>
-                    <property value="62" name="auxiliary;index"/>
-                    <property value="62" name="auxiliary;index"/>
+                    <property value="63" name="auxiliary;index"/>
+                    <property value="63" name="auxiliary;index"/>
+                    <property value="63" name="auxiliary;index"/>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;0">
                         <property value="#[payload['ID']]" name="value"/>
-                        <property value="63" name="auxiliary;wrapIn"/>
-                        <property value="63" name="auxiliary;index"/>
+                        <property value="64" name="auxiliary;wrapIn"/>
+                        <property value="64" name="auxiliary;index"/>
                         <property value="Employee Id" name="key"/>
                     </property-collection>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;1">
                         <property value="#[payload['FIRST_NAME']]" name="value"/>
-                        <property value="64" name="auxiliary;wrapIn"/>
-                        <property value="64" name="auxiliary;index"/>
+                        <property value="65" name="auxiliary;wrapIn"/>
+                        <property value="65" name="auxiliary;index"/>
                         <property value="Employee First Name" name="key"/>
                     </property-collection>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;2">
                         <property value="#[payload['LAST_NAME']]" name="value"/>
-                        <property value="65" name="auxiliary;wrapIn"/>
-                        <property value="65" name="auxiliary;index"/>
+                        <property value="66" name="auxiliary;wrapIn"/>
+                        <property value="66" name="auxiliary;index"/>
                         <property value="Employee Last Name" name="key"/>
                     </property-collection>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;3">
                         <property value="#[payload['EMAIL']]" name="value"/>
-                        <property value="66" name="auxiliary;wrapIn"/>
-                        <property value="66" name="auxiliary;index"/>
+                        <property value="67" name="auxiliary;wrapIn"/>
+                        <property value="67" name="auxiliary;index"/>
                         <property value="Employee Email" name="key"/>
                     </property-collection>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/ee/tracking/meta-data;4">
                         <property value="#[payload['GITHUB_ID']]" name="value"/>
-                        <property value="67" name="auxiliary;wrapIn"/>
-                        <property value="67" name="auxiliary;index"/>
+                        <property value="68" name="auxiliary;wrapIn"/>
+                        <property value="68" name="auxiliary;index"/>
                         <property value="Employee Git ID" name="key"/>
                     </property-collection>
                 </properties>
@@ -693,47 +740,47 @@
                     <property value="db-to-json" name="config-ref"/>
                     <property value="http://www.mulesoft.org/schema/mule/ee/data-mapper/transform" name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute"/>
                     <property value="db-to-json" name="config-ref"/>
-                    <property value="68" name="auxiliary;index"/>
+                    <property value="69" name="auxiliary;index"/>
                     <property name="input-ref"/>
-                    <property value="68" name="auxiliary;index"/>
-                    <property value="68" name="auxiliary;index"/>
-                    <property value="68" name="auxiliary;index"/>
-                    <property value="68" name="auxiliary;index"/>
-                    <property value="68" name="auxiliary;index"/>
-                    <property value="68" name="auxiliary;index"/>
-                    <property value="68" name="auxiliary;index"/>
-                    <property value="68" name="auxiliary;index"/>
+                    <property value="69" name="auxiliary;index"/>
+                    <property value="69" name="auxiliary;index"/>
+                    <property value="69" name="auxiliary;index"/>
+                    <property value="69" name="auxiliary;index"/>
+                    <property value="69" name="auxiliary;index"/>
+                    <property value="69" name="auxiliary;index"/>
+                    <property value="69" name="auxiliary;index"/>
+                    <property value="69" name="auxiliary;index"/>
                 </properties>
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="SaveToDB" entity-id="f8775249-f6cc-4126-9253-f35fb264de8d">
+    <flow SubFlow="true" name="SaveToDB" entity-id="c5fc1679-40a1-4af9-9c0b-b4479ed7d539">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
-            <property value="69" name="auxiliary;index"/>
+            <property value="70" name="auxiliary;index"/>
             <property name="bussinessEventsLabel"/>
             <property name="tracking:enable-default-events"/>
-            <property value="69" name="auxiliary;index"/>
-            <property value="69" name="auxiliary;index"/>
-            <property value="69" name="auxiliary;index"/>
+            <property value="70" name="auxiliary;index"/>
+            <property value="70" name="auxiliary;index"/>
+            <property value="70" name="auxiliary;index"/>
         </properties>
         <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="compartment-lane#8">
             <scope type="org.mule.tooling.ui.modules.core.scope.enricher" name="Message Enricher" entity-id="Message Enricher#2">
                 <properties>
                     <property name="source"/>
                     <property value="payload['id']" name="target"/>
-                    <property value="70" name="auxiliary;index"/>
-                    <property value="70" name="auxiliary;index"/>
-                    <property value="70" name="auxiliary;index"/>
+                    <property value="71" name="auxiliary;index"/>
+                    <property value="71" name="auxiliary;index"/>
+                    <property value="71" name="auxiliary;index"/>
                 </properties>
                 <compartment entity-id="compartment#5">
                     <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="compartment-lane#9">
                         <scope type="http://www.mulesoft.org/schema/mule/core/processor-chain" name="Processor Chain" entity-id="Processor Chain#1">
                             <properties>
-<property value="71" name="auxiliary;index"/>
-<property value="71" name="auxiliary;index"/>
-<property value="71" name="auxiliary;index"/>
+<property value="72" name="auxiliary;index"/>
+<property value="72" name="auxiliary;index"/>
+<property value="72" name="auxiliary;index"/>
                             </properties>
                             <compartment entity-id="compartment#6">
 <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="compartment-lane#10">
@@ -741,49 +788,50 @@
         <properties>
             <property value="one-way" name="exchange-pattern"/>
             <property value="request-response" name="exchange-pattern"/>
-            <property value="72" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
             <property name=""/>
             <property value="increment ID" name="queryKey"/>
-            <property value="72" name="auxiliary;index"/>
-            <property value="72" name="auxiliary;index"/>
-            <property value="72" name="auxiliary;index"/>
-            <property value="72" name="auxiliary;index"/>
-            <property value="72" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
             <property name="businessEventsLabel"/>
             <property name="tracking:enable-default-events"/>
-            <property value="72" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
             <property name="address"/>
             <property name="responseTimeout"/>
             <property name="encoding"/>
             <property name="disableTransportTransformer"/>
             <property name="mimeType"/>
-            <property value="72" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
             <property value="10" name="queryTimeout"/>
             <property name="pollingFrequency"/>
-            <property value="72" name="auxiliary;index"/>
-            <property value="72" name="auxiliary;index"/>
-            <property value="72" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
             <property value="Database" name="connector-ref"/>
             <property name="ref"/>
             <property name="transformer-refs"/>
             <property name="responseTransformer-refs"/>
-            <property value="72" name="auxiliary;index"/>
-            <property value="72" name="auxiliary;index"/>
-            <property value="72" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
+            <property value="73" name="auxiliary;index"/>
             <property-collection name="@http://www.mulesoft.org/schema/mule/ee/jdbc/query;0">
                 <property value="SELECT Auto_Increment next_val FROM INFORMATION_SCHEMA.TABLES WHERE table_schema=DATABASE() AND Table_name ='employee'" name="value"/>
-                <property value="73" name="auxiliary;wrapIn"/>
-                <property value="73" name="auxiliary;index"/>
+                <property value="74" name="auxiliary;wrapIn"/>
+                <property value="74" name="auxiliary;index"/>
                 <property value="increment ID" name="key"/>
+                <property value="true" name="isProcessed$$$$"/>
             </property-collection>
         </properties>
     </endpoint>
     <pattern type="http://www.mulesoft.org/schema/mule/core/set-payload" name="Set Payload" entity-id="Set Payload#1">
         <properties>
             <property value="#[payload[0]['next_val']]" name="value"/>
-            <property value="74" name="auxiliary;index"/>
-            <property value="74" name="auxiliary;index"/>
-            <property value="74" name="auxiliary;index"/>
+            <property value="75" name="auxiliary;index"/>
+            <property value="75" name="auxiliary;index"/>
+            <property value="75" name="auxiliary;index"/>
         </properties>
     </pattern>
 </lane>
@@ -797,48 +845,48 @@
                     <property value="Employee ID #[payload['id']]" name="message"/>
                     <property value="ERROR" name="level"/>
                     <property name="category"/>
-                    <property value="75" name="auxiliary;index"/>
-                    <property value="75" name="auxiliary;index"/>
-                    <property value="75" name="auxiliary;index"/>
+                    <property value="76" name="auxiliary;index"/>
+                    <property value="76" name="auxiliary;index"/>
+                    <property value="76" name="auxiliary;index"/>
                 </properties>
             </pattern>
             <endpoint message-exchange-pattern="OneWay" direction="Outbound" type="http://www.mulesoft.org/schema/mule/ee/jdbc/endpoint" name="Database" entity-id="Database#4">
                 <properties>
                     <property value="one-way" name="exchange-pattern"/>
                     <property value="one-way" name="exchange-pattern"/>
-                    <property value="76" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
                     <property name=""/>
                     <property value="create employee" name="queryKey"/>
-                    <property value="76" name="auxiliary;index"/>
-                    <property value="76" name="auxiliary;index"/>
-                    <property value="76" name="auxiliary;index"/>
-                    <property value="76" name="auxiliary;index"/>
-                    <property value="76" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
                     <property name="businessEventsLabel"/>
                     <property name="tracking:enable-default-events"/>
-                    <property value="76" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
                     <property name="address"/>
                     <property name="responseTimeout"/>
                     <property name="encoding"/>
                     <property name="disableTransportTransformer"/>
                     <property name="mimeType"/>
-                    <property value="76" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
                     <property value="10" name="queryTimeout"/>
                     <property name="pollingFrequency"/>
-                    <property value="76" name="auxiliary;index"/>
-                    <property value="76" name="auxiliary;index"/>
-                    <property value="76" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
                     <property value="Database" name="connector-ref"/>
                     <property name="ref"/>
                     <property name="transformer-refs"/>
                     <property name="responseTransformer-refs"/>
-                    <property value="76" name="auxiliary;index"/>
-                    <property value="76" name="auxiliary;index"/>
-                    <property value="76" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
+                    <property value="77" name="auxiliary;index"/>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/ee/jdbc/query;0">
                         <property value="INSERT INTO employee (ID, FIRST_NAME, LAST_NAME, EMAIL, GITHUB_ID) VALUES (#[payload['id']], #[payload['firstName']], #[payload['lastName']], #[payload['email']], #[payload['gitId']])" name="value"/>
-                        <property value="77" name="auxiliary;wrapIn"/>
-                        <property value="77" name="auxiliary;index"/>
+                        <property value="78" name="auxiliary;wrapIn"/>
+                        <property value="78" name="auxiliary;index"/>
                         <property value="create employee" name="key"/>
                     </property-collection>
                 </properties>
@@ -848,9 +896,9 @@
                     <property value="Saved Employee in DB #[payload]" name="message"/>
                     <property value="ERROR" name="level"/>
                     <property name="category"/>
-                    <property value="78" name="auxiliary;index"/>
-                    <property value="78" name="auxiliary;index"/>
-                    <property value="78" name="auxiliary;index"/>
+                    <property value="79" name="auxiliary;index"/>
+                    <property value="79" name="auxiliary;index"/>
+                    <property value="79" name="auxiliary;index"/>
                 </properties>
             </pattern>
         </lane>
