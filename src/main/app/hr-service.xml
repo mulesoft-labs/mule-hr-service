@@ -24,7 +24,7 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 http://www.mulesoft.org/schema/mule/ee/ftp http://www.mulesoft.org/schema/mule/ee/ftp/current/mule-ftp-ee.xsd 
 http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd 
 http://www.mulesoft.org/schema/mule/jira http://www.mulesoft.org/schema/mule/jira/2.0/mule-jira.xsd ">
-    <sfdc:config name="Salesforce" doc:name="Salesforce" username="dan.diephouse@66demo.com" password="Cloudhub1" securityToken="I12IcfHhFJn6Mf1Zx1Nh3C8F"/>
+    <sfdc:config name="Salesforce" doc:name="Salesforce" username="dan.diephouse@66demo.com" password="Cloudhub123" securityToken="aPFLllYzxCH9XUoaWSVLcjuo"/>
     
     <github:config name="GitHub" user="cloudhubdemoadmin" password="Cloudhub1" doc:name="GitHub"/>
     
@@ -68,7 +68,7 @@ http://www.mulesoft.org/schema/mule/jira http://www.mulesoft.org/schema/mule/jir
     	<set-variable variableName="salesforceUsername" 
     		   value="#[payload.firstName.toLowerCase() + '.' + payload.lastName.toLowerCase() + '.test@66demo.com']" doc:name="Variable"/>
         <tracking:custom-event event-name="Adding User to Salesforce" doc:name="Adding User to Salesforce">
-            <tracking:meta-data key="Salesforce Username" value="#[flowVars[&amp;apos;salesforceUsername&amp;apos;]]"/>
+            <tracking:meta-data key="Salesforce Username" value="#[flowVars['salesforceUsername']]"/>
         </tracking:custom-event>
         <sfdc:create config-ref="Salesforce" type="User" doc:name="Salesforce" >
             <sfdc:objects >
@@ -94,7 +94,7 @@ http://www.mulesoft.org/schema/mule/jira http://www.mulesoft.org/schema/mule/jir
         <logger message="Creating Employee... #[payload]" level="ERROR" doc:name="Logger"/>
         <expression-component doc:name="Set Email">payload['email'] = payload['firstName'].toLowerCase() + "." + payload['lastName'].toLowerCase() + "@mulesoft.com"; return payload</expression-component>
         
-        <flow-ref name="SaveToDB" doc:name="Flow Reference"/>
+        <flow-ref name="SaveToDB" doc:name="Store in DB"/>
 
         <tracking:transaction id="#[payload['id']]"/>
         <tracking:custom-event event-name="Created Employee" doc:name="Created Employee">
