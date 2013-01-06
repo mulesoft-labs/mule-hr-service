@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ftp="http://www.mulesoft.org/schema/mule/ee/ftp" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:cloudhub="http://www.mulesoft.org/schema/mule/cloudhub" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:jira="http://www.mulesoft.org/schema/mule/jira" 
+<mule xmlns:context="http://www.springframework.org/schema/context" xmlns:ftp="http://www.mulesoft.org/schema/mule/ee/ftp" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:cloudhub="http://www.mulesoft.org/schema/mule/cloudhub" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:jira="http://www.mulesoft.org/schema/mule/jira" 
 xmlns:github="http://www.mulesoft.org/schema/mule/github" 
 xmlns="http://www.mulesoft.org/schema/mule/core" 
 xmlns:json="http://www.mulesoft.org/schema/mule/json" 
@@ -24,16 +24,18 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 http://www.mulesoft.org/schema/mule/ee/ftp http://www.mulesoft.org/schema/mule/ee/ftp/current/mule-ftp-ee.xsd 
 http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd 
 http://www.mulesoft.org/schema/mule/jira http://www.mulesoft.org/schema/mule/jira/2.0/mule-jira.xsd ">
-    <sfdc:config name="Salesforce" doc:name="Salesforce" username="dan.diephouse@66demo.com" password="Cloudhub123" securityToken="aPFLllYzxCH9XUoaWSVLcjuo"/>
+    <sfdc:config name="Salesforce" doc:name="Salesforce" username="${salesforce.username}" password="${salesforce.password}" securityToken="${salesforce.securityToken}"
+        url="https://${salesforce.host}/services/Soap/u/23.0"/>
     
-    <github:config name="GitHub" user="cloudhubdemoadmin" password="Cloudhub1" doc:name="GitHub"/>
+    <github:config name="GitHub" user="${github.user}" password="${github.password}" doc:name="GitHub"/>
     
-    <jdbc-ee:mysql-data-source name="MySQL_Data_Source" user="cloudhubdemo" password="Cloudhub!" url="jdbc:mysql://cloudhubdemo.c4agc9xd61eo.us-east-1.rds.amazonaws.com:3306/hrservice" transactionIsolation="UNSPECIFIED" doc:name="MySQL Data Source"/>
+    <jdbc-ee:mysql-data-source name="MySQL_Data_Source" user="${mysql.user}" password="${mysql.password}" url="jdbc:mysql://${mysql.host}:3306/${mysql.db}" transactionIsolation="UNSPECIFIED" doc:name="MySQL Data Source"/>
     
     <jdbc-ee:connector name="Database" dataSource-ref="MySQL_Data_Source" validateConnections="true" queryTimeout="-1" pollingFrequency="0" doc:name="Database"/>
     
     <cloudhub:config name="Cloudhub" doc:name="Cloudhub" url="https://qa.cloudhub.io"/>
     <data-mapper:config name="db-to-json" transformationGraphPath="db-to-json.grf" doc:name="DataMapper"/>
+    <context:property-placeholder location="demo.properties"/>
     
     <flow name="API" doc:name="API">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="employees" tracking:enable-default-events="true" doc:name="HTTP"/>
