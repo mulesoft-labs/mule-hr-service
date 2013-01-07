@@ -33,7 +33,7 @@ http://www.mulesoft.org/schema/mule/jira http://www.mulesoft.org/schema/mule/jir
     
     <jdbc-ee:connector name="Database" dataSource-ref="MySQL_Data_Source" validateConnections="true" queryTimeout="-1" pollingFrequency="0" doc:name="Database"/>
     
-    <cloudhub:config name="Cloudhub" doc:name="Cloudhub" url="https://qa.cloudhub.io"/>
+    <cloudhub:config name="Cloudhub" doc:name="Cloudhub" url="https://cloudhub.io"/>
     <data-mapper:config name="db-to-json" transformationGraphPath="db-to-json.grf" doc:name="DataMapper"/>
     <context:property-placeholder location="demo.properties"/>
     

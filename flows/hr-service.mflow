@@ -89,7 +89,7 @@
         <properties>
             <property value="Cloudhub" name="name"/>
             <property value="5" name="auxiliary;index"/>
-            <property value="https://qa.cloudhub.io" name="url"/>
+            <property value="https://cloudhub.io" name="url"/>
             <property name="maxWaitTime"/>
             <property value="5" name="auxiliary;index"/>
             <property name="username"/>
@@ -116,7 +116,7 @@
             <property value="7" name="auxiliary;index"/>
         </properties>
     </global-element>
-    <flow SubFlow="false" name="API" entity-id="dd55da6b-aa5e-45a2-848a-3aee8f124dfe">
+    <flow SubFlow="false" name="API" entity-id="4df449e7-c9ca-4034-a31f-355bcf5fefaa">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
@@ -172,22 +172,22 @@
             </endpoint>
             <splitter index="10" type="org.mule.tooling.ui.modules.core.pattern.cbr" name="Choice" entity-id="Choice#1">
                 <properties>
-                    <property-collection name="69de0834-cfd7-4475-9bcb-97890e8abc02">
-                        <property value="#[message.inboundProperties['http.method'] == 'GET']" name="choice.expression"/>
-                        <property-collection name="choice.attributes">
-                            <property value="#[message.inboundProperties['http.method'] == 'GET']" name="expression"/>
-                        </property-collection>
-                    </property-collection>
-                    <property-collection name="734556bf-eab7-444d-8333-024449aba437">
+                    <property-collection name="ecea56ff-af07-4dc9-a43c-fd054933534c">
                         <property value="#[message.inboundProperties['http.method'] == 'POST']" name="choice.expression"/>
                         <property-collection name="choice.attributes">
                             <property value="#[message.inboundProperties['http.method'] == 'POST']" name="expression"/>
                         </property-collection>
                     </property-collection>
+                    <property-collection name="09a0aa97-2527-4f8d-8737-0ebf04790d0f">
+                        <property value="#[message.inboundProperties['http.method'] == 'GET']" name="choice.expression"/>
+                        <property-collection name="choice.attributes">
+                            <property value="#[message.inboundProperties['http.method'] == 'GET']" name="expression"/>
+                        </property-collection>
+                    </property-collection>
                 </properties>
                 <pattern type="org.mule.tooling.ui.modules.core.pattern.cbr" name="Choice" entity-id="Choice#2"/>
                 <compartment entity-id="compartment#1">
-                    <lane isChoiceOtherwiseLane="false" index="12" hadOnlyOneElement="false" entity-id="69de0834-cfd7-4475-9bcb-97890e8abc02">
+                    <lane isChoiceOtherwiseLane="false" index="12" hadOnlyOneElement="false" entity-id="09a0aa97-2527-4f8d-8737-0ebf04790d0f">
                         <pattern type="http://www.mulesoft.org/schema/mule/core/flow-ref" name="Get Employee" entity-id="Flow Reference#1">
                             <properties>
 <property value="GetEmployee" name="name"/>
@@ -197,7 +197,7 @@
                             </properties>
                         </pattern>
                     </lane>
-                    <lane isChoiceOtherwiseLane="false" index="15" hadOnlyOneElement="false" entity-id="734556bf-eab7-444d-8333-024449aba437">
+                    <lane isChoiceOtherwiseLane="false" index="15" hadOnlyOneElement="false" entity-id="ecea56ff-af07-4dc9-a43c-fd054933534c">
                         <pattern type="http://www.mulesoft.org/schema/mule/core/flow-ref" name="Create Employee" entity-id="Flow Reference#2">
                             <properties>
 <property value="CreateEmployee" name="name"/>
@@ -207,12 +207,12 @@
                             </properties>
                         </pattern>
                     </lane>
-                    <lane isChoiceOtherwiseLane="true" index="0" hadOnlyOneElement="false" entity-id="3e86eb22-7b76-4ae7-addd-bf35d17115fe"/>
+                    <lane isChoiceOtherwiseLane="true" index="0" hadOnlyOneElement="false" entity-id="ab6d1538-bb9c-4c26-8595-3d7bd321a381"/>
                 </compartment>
             </splitter>
         </lane>
     </flow>
-    <flow SubFlow="false" name="AddMemberToGithub" entity-id="92363220-d50d-4525-8602-df2e4dd365da">
+    <flow SubFlow="false" name="AddMemberToGithub" entity-id="68156e22-d5c6-45d7-aadf-7b9ce0c970bf">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
@@ -311,7 +311,7 @@
             </scope>
         </lane>
     </flow>
-    <flow SubFlow="false" name="AddUserToSalesforce" entity-id="a432e860-e4ff-4d7e-9c36-67a3bdead3da">
+    <flow SubFlow="false" name="AddUserToSalesforce" entity-id="2adf74dc-462d-4e8f-b43a-8c773d47e6c8">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
@@ -459,7 +459,7 @@
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="CreateEmployee" entity-id="68981fce-35b4-4855-8d5e-3ee68b5c54ec">
+    <flow SubFlow="true" name="CreateEmployee" entity-id="99c566f9-2112-4b73-bf0c-ab3ab851eb9a">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
@@ -553,7 +553,7 @@
             </pattern>
             <splitter index="55" type="org.mule.tooling.ui.modules.core.pattern.cbr" name="Choice" entity-id="Choice#3">
                 <properties>
-                    <property-collection name="e6961672-0755-4b86-856b-6d914b0f5bb6">
+                    <property-collection name="18a5ebb9-84e6-46b8-b119-bf2696f981c0">
                         <property value="#[payload['gitId']]" name="choice.expression"/>
                         <property-collection name="choice.attributes">
                             <property value="#[payload['gitId']]" name="expression"/>
@@ -562,7 +562,7 @@
                 </properties>
                 <pattern type="org.mule.tooling.ui.modules.core.pattern.cbr" name="Choice" entity-id="Choice#4"/>
                 <compartment entity-id="compartment#3">
-                    <lane isChoiceOtherwiseLane="false" index="57" hadOnlyOneElement="true" entity-id="e6961672-0755-4b86-856b-6d914b0f5bb6">
+                    <lane isChoiceOtherwiseLane="false" index="57" hadOnlyOneElement="true" entity-id="18a5ebb9-84e6-46b8-b119-bf2696f981c0">
                         <pattern type="http://www.mulesoft.org/schema/mule/core/flow-ref" name="Add to Git" entity-id="Flow Reference#4">
                             <properties>
 <property value="AddMemberToGithub" name="name"/>
@@ -572,7 +572,7 @@
                             </properties>
                         </pattern>
                     </lane>
-                    <lane isChoiceOtherwiseLane="true" index="0" hadOnlyOneElement="false" entity-id="5065e6d8-6e56-4c07-8525-d292440666e7"/>
+                    <lane isChoiceOtherwiseLane="true" index="0" hadOnlyOneElement="false" entity-id="8b45c6d6-cf3c-4f96-a93a-a6e0e8b0a2d1"/>
                 </compartment>
             </splitter>
             <scope type="org.mule.tooling.ui.modules.core.scope.enricher" name="Message Enricher" entity-id="Message Enricher#1">
@@ -614,7 +614,7 @@
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="GetEmployee" entity-id="909af84e-a6bc-46e0-934d-5e434c77a480">
+    <flow SubFlow="true" name="GetEmployee" entity-id="2d72bf59-d462-40b1-90a5-43e1ea42df2f">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
@@ -724,7 +724,7 @@
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="SaveToDB" entity-id="8d208da7-9b19-42ae-a6ef-32da30235464">
+    <flow SubFlow="true" name="SaveToDB" entity-id="4a7cc566-a1f8-4d37-b83a-e07c71308950">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
